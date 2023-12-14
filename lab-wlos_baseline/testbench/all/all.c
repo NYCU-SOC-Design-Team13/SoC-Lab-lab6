@@ -80,7 +80,7 @@ void __attribute__ ( ( section ( ".mprjram" ) ) ) sort(int low, int hi){
 
 int* __attribute__ ( ( section ( ".mprjram" ) ) ) qsort(){
 	sort(0,Q_SIZE-1);
-	return A;
+	return QA;
 }
 
 // uart

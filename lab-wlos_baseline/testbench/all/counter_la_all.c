@@ -143,19 +143,35 @@ void main()
 		}
 	}*/
 
+
+	int delay = 0;
+	// ==================== matmul ====================
+
+	#ifdef USER_PROJ_IRQ0_EN	
+	// unmask USER_IRQ_0_INTERRUPT
+	mask = irq_getmask();
+	mask |= 1 << USER_IRQ_0_INTERRUPT; // USER_IRQ_0_INTERRUPT = 2
+	irq_setmask(mask);
+	// enable user_irq_0_ev_enable
+	user_irq_0_ev_enable_write(1);	
+	#endif
+
+    int *tmp_mat = matmul();
+	while(delay < 500){ delay++; }
+	delay = 0;
+	reg_mprj_datal = *tmp_mat << 16;
+	reg_mprj_datal = *(tmp_mat+1) << 16;
+	reg_mprj_datal = *(tmp_mat+2) << 16;
+	reg_mprj_datal = *(tmp_mat+3) << 16;
+	reg_mprj_datal = 0xAB600000;
+
     // ==================== fir ====================
-    // int* tmp_fir = fir();
-	// reg_mprj_datal = *tmp_fir << 16;
-	// reg_mprj_datal = *(tmp_fir+1) << 16;
-	// reg_mprj_datal = *(tmp_fir+2) << 16;
-	// reg_mprj_datal = *(tmp_fir+3) << 16;
-	// reg_mprj_datal = *(tmp_fir+4) << 16;
-	// reg_mprj_datal = *(tmp_fir+5) << 16;
-	// reg_mprj_datal = *(tmp_fir+6) << 16;
-	// reg_mprj_datal = *(tmp_fir+7) << 16;
-	// reg_mprj_datal = *(tmp_fir+8) << 16;
-	// reg_mprj_datal = *(tmp_fir+9) << 16;
-	// reg_mprj_datal = *(tmp_fir+10) << 16;	
+    int* tmp_fir = fir();
+	reg_mprj_datal = *(tmp_fir+7) << 16;
+	reg_mprj_datal = *(tmp_fir+8) << 16;
+	reg_mprj_datal = *(tmp_fir+9) << 16;
+	reg_mprj_datal = *(tmp_fir+10) << 16;
+	reg_mprj_datal = 0xAB610000;
 
     // ==================== qsort ====================
 
@@ -164,21 +180,9 @@ void main()
 	reg_mprj_datal = *(tmp_qs+1) << 16;
 	reg_mprj_datal = *(tmp_qs+2) << 16;
 	reg_mprj_datal = *(tmp_qs+3) << 16;
-	reg_mprj_datal = *(tmp_qs+4) << 16;
-	reg_mprj_datal = *(tmp_qs+5) << 16;
-	reg_mprj_datal = *(tmp_qs+6) << 16;
-	reg_mprj_datal = *(tmp_qs+7) << 16;
-	reg_mprj_datal = *(tmp_qs+8) << 16;
-	reg_mprj_datal = *(tmp_qs+9) << 16;
+	reg_mprj_datal = 0xAB620000;
 
-    // ==================== matmul ====================
-
-    // int *tmp_mat = matmul();
-	// reg_mprj_datal = *tmp_mat << 16;
-	// reg_mprj_datal = *(tmp_mat+1) << 16;
-	// reg_mprj_datal = *(tmp_mat+2) << 16;
-	// reg_mprj_datal = *(tmp_mat+3) << 16;
-
+    reg_mprj_datal = 0xAB510000;
 	/*for(int i = 0; i < 4; i++){
 		uart_write(i);
 	}*/
@@ -191,12 +195,5 @@ void main()
 	//print("Monitor: Test 1 Passed\n\n");	// Makes simulation very long!
 	// reg_mprj_datal = 0xAB510000;
 
-#ifdef USER_PROJ_IRQ0_EN	
-	// unmask USER_IRQ_0_INTERRUPT
-	mask = irq_getmask();
-	mask |= 1 << USER_IRQ_0_INTERRUPT; // USER_IRQ_0_INTERRUPT = 2
-	irq_setmask(mask);
-	// enable user_irq_0_ev_enable
-	user_irq_0_ev_enable_write(1);	
-#endif
+
 }
