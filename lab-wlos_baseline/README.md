@@ -1,6 +1,6 @@
 # WorkLoad Optimize SOC (WLOS) Baseline
 
-Note: For Simulation for three funcitons in user project please go to branch `3_exe`
+Note: For Simulation for three funcitons in user project please go to branch `3_exp`
 
 ### Simulation for matrix multiplication
 ```sh
